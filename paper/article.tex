@@ -1,0 +1,123 @@
+% The MIT License (MIT)
+%
+% Copyright (c) 2020 Yegor Bugayenko
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included
+% in all copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
+
+% \documentclass[a4paper,UKenglish,cleveref, autoref]{lipics-v2019}
+\documentclass[12pt]{article}
+\title{What Happens to Constructors When Classes Get Larger?}
+\author{Yegor Bugayenko}{}{}
+% \authorrunning{Yegor Bugayenko}
+% \ccsdesc[100]{Software and its engineering~Object oriented languages}
+% \keywords{Object-Oriented Programming, Immutability, NCSS}
+\usepackage[utf8]{inputenc}
+\usepackage[numbers]{natbib}
+\bibliographystyle{plainnat}
+\usepackage[inline]{enumitem}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{verbatimbox}
+\usepackage{interval}
+\usepackage{hyperref}
+\usepackage{minted}
+  \setminted{fontsize=\footnotesize}
+  \setminted{breaklines}
+  \usemintedstyle{bw}
+\newcommand{\code}[1]{\texttt{#1}}
+\newenvironment{nicetable}
+  {\setlength{\parindent}{0em}\medskip\small}
+  {\medskip}
+\input{total}
+\begin{document}
+\raggedbottom
+\maketitle
+
+\begin{abstract}
+...
+\end{abstract}
+
+\section{Introduction}
+
+
+\section{Related Work}
+
+...
+
+\section{Empirical Results}
+
+A list of Java repositories were retrieved from GitHub via their
+public API. The first \thetotalrepos{} repositories were taken, which satisfied
+the selection criteria:
+\begin{enumerate*}[label={\arabic*)}]
+\item more than 1,000 GitHub stars,
+\item more than 200 Kb of data,
+\item not archived, and
+\item public.
+\end{enumerate*}
+The list included popular Java open source products, such as
+Spring, RxJava, Guava, MyBatis, Clojure, JUnit, Lombok,
+Graal, Selenium, Spark, Mockito, Neo4j, Jenkins, Netty, and others.
+
+Files with \texttt{.java} extension were taken from all repositories.
+Enums and interfaces were removed.
+There were \thetotaljavafiles{} files found.
+
+Attributes and constructors were counted for each Java class,
+using \texttt{javalang}, an open source Java-parsing library written in Python.
+The size of each class was calculated using the NCSS metric.
+Classes with NCSS larger than 1000 were excluded from the graph. This decision was
+motivated by the confounding effect the size of a class has
+on the validity of object-oriented metrics, as was empirically shown by~\citet{el2001}.
+
+The Figure~\ref{fig:1} demonstrates the relationship between NCSS (the horizontal
+axis) and the amount of constructors in each class (the vertical axis). The
+graph visually confirms the obvious thought: when classes get larger
+they tend to have more constructors.
+
+\begin{figure}[h]
+  \input{ctors.tex}
+  \caption{The relationship between class size and the number of constructors}
+  \label{fig:1}
+\end{figure}
+
+However, the Figure~\ref{fig:2} shows what happens at the same time
+with the constructors-to-methods ratio. In smaller classes constructors
+constitute 15-20\% of all methods, while for larger classes this ratio
+drops below 10\%.
+
+\begin{figure}[h]
+  \input{ctors-share.tex}
+  \caption{The relationship between class size and the constructors-to-methods ratio}
+  \label{fig:2}
+\end{figure}
+
+This confirms that...
+
+\section{Conclusion}
+
+It was empirically confirmed that ...
+
+The source code of Ruby and Python scripts used to do the research
+is available in GitHub repository \texttt{yegor256/ctors-vs-size}.
+
+\bibliography{main}
+
+\end{document}
